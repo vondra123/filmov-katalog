@@ -1,4 +1,4 @@
-# Jméno Příjmení
+# Tobiáš Vondra
 ---
 ## Zvolené rozšíření
 - Popisek

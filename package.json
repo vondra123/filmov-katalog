@@ -1,0 +1,22 @@
+{
+  "name": "filmov-katalog",
+  "version": "1.0.0",
+  "description": "movie list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "seed": "node database/seed.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/vondra123/filmov-katalog)"
+  },
+  "author": "Tobiáš Vondra",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
+  }
+}

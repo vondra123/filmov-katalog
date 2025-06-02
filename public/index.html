@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+
+<body>
+    <h1>Todo List</h1>
+    <section>
+        <h2>Přidat nový úkol</h2>
+        <form id="todo-form">
+            <div> <label for="name">Název úkolu:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div> <label for="description">Popis:</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            <div> <button type="submit">Přidat úkol</button>
+            </div>
+        </form>
+    </section>
+    <section>
+        <h2>Seznam úkolů</h2>
+        <ul id="todo-list"> <!-- Zde se budou zobrazovat úkoly -->
+        </ul>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchTodos);
+
+        document.getElementById('todo-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            try {
+                const response = await fetch('/api/items', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, description })
+                });
+                if (response.ok) {
+                    document.getElementById('todo-form').reset();
+                    fetchTodos();
+                } else {
+                    alert('Chyba při přidávání úkolu');
+                }
+            } catch (error) {
+                console.error('Chyba:', error);
+            }
+        });
+
+        async function fetchTodos() {
+            try {
+                const response = await fetch('/api/items');
+                const todos = await response.json();
+                const todoList = document.getElementById('todo-list');
+                todoList.innerHTML = '';
+                todos.forEach(todo => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${todo.name}</strong>: ${todo.description || ''}`;
+                    todoList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Chyba při načítání úkolů:', error);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
