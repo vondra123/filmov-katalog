@@ -1,6 +1,25 @@
--- Vytvor tabulku "items"
-CREATE TABLE IF NOT EXISTS items ( 
+
+
+
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE genres (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL, 
-  description TEXT
+  name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE movies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  genre_id INTEGER NOT NULL,
+  FOREIGN KEY (genre_id) REFERENCES genres(id)
+);
+
+CREATE TABLE ratings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL,
+  rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+  movie_id INTEGER NOT NULL,
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
 );

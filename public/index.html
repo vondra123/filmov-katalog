@@ -1,73 +1,50 @@
 <!DOCTYPE html>
 <html lang="cs">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> Filmový katalog</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <h1>Todo List</h1>
-    <section>
-        <h2>Přidat nový úkol</h2>
-        <form id="todo-form">
-            <div> <label for="name">Název úkolu:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div> <label for="description">Popis:</label>
-                <textarea id="description" name="description"></textarea>
-            </div>
-            <div> <button type="submit">Přidat úkol</button>
-            </div>
-        </form>
+  <header>
+    <h1>Filmový katalog</h1>
+    <p>Objevuj, přidávej a hodnoť filmy!</p>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <h2>Přidat nový film</h2>
+      <form id="movieForm">
+        <input type="text" id="title" placeholder="Název filmu" required />
+        <input type="number" id="year" placeholder="Rok" required min="1888" max="2100" />
+        <select id="genreSelect" required></select>
+        <button type="submit">🎞️ Přidat film</button>
+      </form>
     </section>
-    <section>
-        <h2>Seznam úkolů</h2>
-        <ul id="todo-list"> <!-- Zde se budou zobrazovat úkoly -->
-        </ul>
+
+    <section class="form-section">
+      <h2>Přidat hodnocení</h2>
+      <form id="ratingForm">
+        <input type="text" id="username" placeholder="Tvoje jméno" required />
+        <select id="movieRatingSelect" required></select>
+        <input type="number" id="rating" min="1" max="5" placeholder="Hodnocení (1–5)" required />
+        <button type="submit"> Odeslat hodnocení</button>
+      </form>
     </section>
-    <script>
-        document.addEventListener('DOMContentLoaded', fetchTodos);
 
-        document.getElementById('todo-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const description = document.getElementById('description').value;
-            try {
-                const response = await fetch('/api/items', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, description })
-                });
-                if (response.ok) {
-                    document.getElementById('todo-form').reset();
-                    fetchTodos();
-                } else {
-                    alert('Chyba při přidávání úkolu');
-                }
-            } catch (error) {
-                console.error('Chyba:', error);
-            }
-        });
+    <section class="movies">
+      <h2> Seznam filmů</h2>
+      <ul id="movieList"></ul>
+    </section>
+  </main>
 
-        async function fetchTodos() {
-            try {
-                const response = await fetch('/api/items');
-                const todos = await response.json();
-                const todoList = document.getElementById('todo-list');
-                todoList.innerHTML = '';
-                todos.forEach(todo => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${todo.name}</strong>: ${todo.description || ''}`;
-                    todoList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Chyba při načítání úkolů:', error);
-            }
-        }
-    </script>
+  <footer>
+    <p>&copy; 2025 Filmový katalog. Vytvořeno jako školní projekt.</p>
+  </footer>
 
+  <script src="script.js"></script>
 </body>
-
 </html>
